@@ -25,7 +25,7 @@ import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 
 class MainScreen(
-    val state: MainScreenState = MainScreenState()
+    private val state: MainScreenState = MainScreenState()
 ) : Screen {
     @OptIn(ExperimentalAnimationApi::class, ExperimentalComposeUiApi::class)
     @Composable
