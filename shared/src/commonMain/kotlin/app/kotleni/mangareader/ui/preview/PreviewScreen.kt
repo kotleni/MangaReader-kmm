@@ -45,7 +45,6 @@ class PreviewScreen(val mangaShort: MangaShort): Screen {
         val viewModel = rememberScreenModel { PreviewViewModel(MangaRepository()).also { it.loadAdditionalInfo(mangaShort) } }
 
         val mangaNullable by viewModel.mangaInfo.collectAsState()
-        val scrollState = rememberScrollState()
 
         if(mangaNullable == null) {
             CircularProgressIndicator()
@@ -54,10 +53,7 @@ class PreviewScreen(val mangaShort: MangaShort): Screen {
 
         val manga = mangaNullable!! // Yes, i check it before
 
-        Column(
-            horizontalAlignment = Alignment.CenterHorizontally,
-            modifier = Modifier.scrollable(scrollState, Orientation.Vertical)
-        ) {
+        Column {
             TopAppBar(
                 title = { Text(mangaShort.name) },
                 navigationIcon = {
@@ -71,44 +67,58 @@ class PreviewScreen(val mangaShort: MangaShort): Screen {
                 }
             )
 
-            MangaImagePreview(manga.imageUrl, height = 220.dp, width = 200.dp)
-
-            Column(
-                modifier = Modifier.padding(8.dp),
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                Text(manga.name, fontWeight = FontWeight.Bold)
-                Text(manga.description.substring(0, 50))
-            }
-
-            Column {
-                Text(manga.status.toString())
-                Text("Оценка: " + manga.score.toString() + "/10")
-            }
-
-            LazyRow {
-                for(genre in manga.genres) {
-                    item(genre.name) {
-                        AssistChip(
-                            onClick = { },
-                            label = { Text(genre.name) },
-                            modifier = Modifier.padding(4.dp)
-                        )
-                    }
-                }
-            }
-
-            Spacer(
-                Modifier.height(16.dp)
-            )
-
             LazyColumn {
+                item {
+                    Column(
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                    ) {
+                        MangaImagePreview(manga.imageUrl, height = 220.dp, width = 200.dp)
+
+                        Spacer(
+                            Modifier.height(8.dp)
+                        )
+
+                        Text(
+                            text = manga.description,
+                            modifier = Modifier.padding(8.dp)
+                        )
+
+                        Spacer(
+                            Modifier.height(8.dp)
+                        )
+
+                        Text(manga.status.toString())
+                        Text("Оценка: " + manga.score.toString() + "/10")
+                    }
+
+                    LazyRow(
+                        modifier = Modifier.padding(4.dp)
+                    ) {
+                        for(genre in manga.genres) {
+                            item(genre.name) {
+                                AssistChip(
+                                    onClick = { },
+                                    label = { Text(genre.name) },
+                                    modifier = Modifier.padding(4.dp)
+                                )
+                            }
+                        }
+                    }
+
+                    Spacer(
+                        Modifier.height(16.dp)
+                    )
+                }
+
                 items(manga.chapters) {
                     Row(
-                        modifier = Modifier.padding(8.dp)
+                        modifier = Modifier.padding(8.dp),
+                        verticalAlignment = Alignment.CenterVertically
                     ) {
-                        Text(text = it.title)
-                        Spacer(modifier = Modifier.weight(1f))
+                        Text(
+                            text = it.title,
+                            modifier = Modifier.weight(1f)
+                        )
                         OutlinedButton(onClick = { /*TODO*/ }) {
                             Text(text = "Читать")
                         }
