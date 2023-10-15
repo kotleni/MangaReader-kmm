@@ -17,7 +17,7 @@ fun MangaItem(manga: MangaShort, onItemClick: () -> Unit) {
         modifier = Modifier.padding(8.dp).clickable { onItemClick() }
     ) {
         Row {
-            MangaImagePreview(manga.imageUrl)
+            MangaImagePreview(manga.imageUrl, modifier = Modifier.padding(8.dp))
             Column {
                 Text(manga.name, fontWeight = FontWeight.Bold)
                 Text(manga.description.substring(0, 50))

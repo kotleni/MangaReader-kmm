@@ -21,18 +21,14 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.TopAppBarScrollBehavior
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import app.kotleni.mangareader.MangaRepository
-import app.kotleni.mangareader.entities.Manga
 import app.kotleni.mangareader.entities.MangaShort
 import app.kotleni.mangareader.ui.shared.MangaImagePreview
 import cafe.adriel.voyager.core.model.rememberScreenModel
@@ -75,7 +71,7 @@ class PreviewScreen(val mangaShort: MangaShort): Screen {
                 }
             )
 
-            MangaImagePreview(manga.imageUrl, height = 260.dp)
+            MangaImagePreview(manga.imageUrl, height = 220.dp, width = 200.dp)
 
             Column(
                 modifier = Modifier.padding(8.dp),
