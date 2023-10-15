@@ -16,5 +16,5 @@ data class DesuManga(
     val score: Double,
     val genres: List<DesuGenre>,
     val chapters: DesuChapters,
-    val pages: DesuPages?
+    val pages: DesuPages? = null
 )

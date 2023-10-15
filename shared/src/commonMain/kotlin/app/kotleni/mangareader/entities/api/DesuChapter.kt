@@ -8,5 +8,5 @@ data class DesuChapter(
     val vol: Int,
     val ch: Double,
     val title: String?,
-    val data: Long
+    val date: Long
 )

@@ -21,6 +21,7 @@ kotlin {
 
     sourceSets {
         val ktorVersion = "2.3.5"
+        val voyagerVersion = "1.0.0-rc05"
 
         val commonMain by getting {
             dependencies {
@@ -35,6 +36,12 @@ kotlin {
 
                 implementation("io.ktor:ktor-client-content-negotiation:$ktorVersion")
                 implementation("io.ktor:ktor-serialization-kotlinx-json:$ktorVersion")
+
+                // Navigation
+                implementation("cafe.adriel.voyager:voyager-navigator:$voyagerVersion")
+                implementation("cafe.adriel.voyager:voyager-bottom-sheet-navigator:$voyagerVersion")
+                implementation("cafe.adriel.voyager:voyager-tab-navigator:$voyagerVersion")
+                implementation("cafe.adriel.voyager:voyager-transitions:$voyagerVersion")
             }
         }
         val androidMain by getting {
