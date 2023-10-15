@@ -60,7 +60,7 @@ class DesuMeClientImpl : DesuMeClient {
             status = MangaStatus.fromString(it.status),
             genres = it.genres.map { MangaGenre(it.kind, it.russian) },
             score = it.score,
-            chapters = it.chapters.list.map {
+            chapters = it.chapters.list.reversed().map {
                 // TODO: fix stupid code
                 val number = if(it.ch.toInt().toDouble() == it.ch) it.ch.toInt() else it.ch
                 val title = if(it.title != null) "${it.title} ($number)" else "Глава $number"
