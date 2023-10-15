@@ -55,7 +55,7 @@ class ReaderScreen(
         val state = rememberTransformableState { zoomChange, offsetChange, rotationChange ->
             scale *= zoomChange
             //rotation += rotationChange
-            offset += offsetChange
+            offset += offsetChange * scale
         }
 
         if(currentPage == null) {
