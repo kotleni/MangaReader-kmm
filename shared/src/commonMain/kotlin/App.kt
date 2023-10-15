@@ -14,9 +14,9 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Button
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import androidx.compose.material3.Button
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -99,7 +99,7 @@ fun MainScreen(viewModel: MainViewModel) {
             searchText = searchText,
             onSearchTextChanged = { searchText = it },
             onClearClick = { viewModel.searchManga(searchText) },
-            // modifier = Modifier.padding(4.dp)
+            modifier = Modifier.padding(4.dp)
         )
 
         LazyColumn(

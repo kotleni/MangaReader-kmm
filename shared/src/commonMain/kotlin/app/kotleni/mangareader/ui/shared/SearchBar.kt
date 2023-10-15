@@ -8,15 +8,16 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.Icon
-import androidx.compose.material.IconButton
-import androidx.compose.material.OutlinedTextField
-import androidx.compose.material.Text
-import androidx.compose.material.TextFieldDefaults
-import androidx.compose.material.TopAppBar
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextFieldDefaults
+import androidx.compose.material3.TopAppBar
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Search
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.*
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
@@ -28,6 +29,7 @@ import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 
+@OptIn(ExperimentalMaterial3Api::class)
 @ExperimentalAnimationApi
 @ExperimentalComposeUiApi
 @Composable
@@ -44,19 +46,19 @@ fun SearchBar(
     val focusRequester = remember { FocusRequester() }
 
     TopAppBar(title = { Text("") }, modifier = modifier, navigationIcon = {
-        IconButton(onClick = { onNavigateBack() }) {
-            Icon(
-                imageVector = Icons.Filled.ArrowBack,
-                modifier = Modifier,
-                contentDescription = ""
-            )
-        }
+//        IconButton(onClick = { onNavigateBack() }) {
+//            Icon(
+//                imageVector = Icons.Filled.ArrowBack,
+//                modifier = Modifier,
+//                contentDescription = ""
+//            )
+//        }
     }, actions = {
 
         OutlinedTextField(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(vertical = 2.dp)
+                //.padding(vertical = 2.dp)
                 .onFocusChanged { focusState ->
                     showClearButton = (focusState.isFocused)
                 }
@@ -66,12 +68,12 @@ fun SearchBar(
             placeholder = {
                 Text(text = placeholderText)
             },
-            colors = TextFieldDefaults.textFieldColors(
-                focusedIndicatorColor = Color.Transparent,
-                unfocusedIndicatorColor = Color.Transparent,
-                //backgroundColor = Color.Transparent,
-                //cursorColor = LocalContentColor.current.copy(alpha = LocalContentAlpha.current)
-            ),
+//            colors = TextFieldDefaults.textFieldColors(
+//                focusedIndicatorColor = Color.Transparent,
+//                unfocusedIndicatorColor = Color.Transparent,
+//                //backgroundColor = Color.Transparent,
+//                //cursorColor = LocalContentColor.current.copy(alpha = LocalContentAlpha.current)
+//            ),
             trailingIcon = {
                 AnimatedVisibility(
                     visible = showClearButton,
