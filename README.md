@@ -8,7 +8,8 @@ As source of manga, this project use <a href="https://desu.me">desu.me</a> api.
 - [x] Preview
 - [x] About info
 - [x] Chapters list
-- [ ] Reading
+- [x] Reading
+- [ ] Saving reading progress
 - [ ] Offline downloading and read
 
 ### Used technologies
