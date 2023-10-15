@@ -30,6 +30,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import app.kotleni.mangareader.MangaRepository
 import app.kotleni.mangareader.entities.MangaShort
+import app.kotleni.mangareader.ui.reader.ReaderScreen
 import app.kotleni.mangareader.ui.shared.MangaImagePreview
 import cafe.adriel.voyager.core.model.rememberScreenModel
 import cafe.adriel.voyager.core.screen.Screen
@@ -119,7 +120,9 @@ class PreviewScreen(val mangaShort: MangaShort): Screen {
                             text = it.title,
                             modifier = Modifier.weight(1f)
                         )
-                        OutlinedButton(onClick = { /*TODO*/ }) {
+                        OutlinedButton(onClick = {
+                            navigator.push(ReaderScreen(manga, it))
+                        }) {
                             Text(text = "Читать")
                         }
                     }
