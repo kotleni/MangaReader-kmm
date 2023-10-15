@@ -1,5 +1,7 @@
 package app.kotleni.mangareader.ui.preview
 
+import androidx.compose.foundation.gestures.Orientation
+import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -8,14 +10,23 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.AssistChip
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarScrollBehavior
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
@@ -38,6 +49,7 @@ class PreviewScreen(val mangaShort: MangaShort): Screen {
         val viewModel = rememberScreenModel { PreviewViewModel(MangaRepository()).also { it.loadAdditionalInfo(mangaShort) } }
 
         val mangaNullable by viewModel.mangaInfo.collectAsState()
+        val scrollState = rememberScrollState()
 
         if(mangaNullable == null) {
             CircularProgressIndicator()
@@ -47,8 +59,22 @@ class PreviewScreen(val mangaShort: MangaShort): Screen {
         val manga = mangaNullable!! // Yes, i check it before
 
         Column(
-            horizontalAlignment = Alignment.CenterHorizontally
+            horizontalAlignment = Alignment.CenterHorizontally,
+            modifier = Modifier.scrollable(scrollState, Orientation.Vertical)
         ) {
+            TopAppBar(
+                title = { Text(mangaShort.name) },
+                navigationIcon = {
+                    IconButton(onClick = { navigator.pop() }) {
+                        Icon(
+                            imageVector = Icons.Filled.ArrowBack,
+                            modifier = Modifier,
+                            contentDescription = "Back button"
+                        )
+                    }
+                }
+            )
+
             MangaImagePreview(manga.imageUrl, height = 260.dp)
 
             Column(
