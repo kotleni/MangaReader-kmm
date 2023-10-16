@@ -2,6 +2,7 @@ package app.kotleni.mangareader.ui.reader
 
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.gestures.detectTransformGestures
 import androidx.compose.foundation.gestures.rememberTransformableState
 import androidx.compose.foundation.gestures.transformable
@@ -26,7 +27,10 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.input.pointer.PointerInputFilter
 import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.unit.IntSize
 import app.kotleni.mangareader.MangaRepository
 import app.kotleni.mangareader.entities.Manga
 import app.kotleni.mangareader.entities.MangaChapter
@@ -57,6 +61,8 @@ class ReaderScreen(
             //rotation += rotationChange
             offset += offsetChange * scale
         }
+
+        var size by remember { mutableStateOf(IntSize.Zero) }
 
         if(currentPage == null) {
             CircularProgressIndicator()
@@ -90,7 +96,18 @@ class ReaderScreen(
                     onFailure = { Text("Loading (url: ${page.imageUrl}) error: ${it.message}").also { println(page.imageUrl) } },
                     animationSpec = tween(),
                     modifier = Modifier.fillMaxSize()
-                        .clickable { viewModel.nextPage() }
+                        .onGloballyPositioned { coordinates ->
+                            size = coordinates.size
+                        }
+                        .pointerInput(Unit) {
+                            detectTapGestures {
+                                val halfX = size.width / 2
+                                if(it.x > halfX)
+                                    viewModel.nextPage()
+                                else
+                                    viewModel.prevPage()
+                            }
+                        }
                         .graphicsLayer(
                             scaleX = scale,
                             scaleY = scale,

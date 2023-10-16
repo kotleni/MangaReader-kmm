@@ -41,4 +41,12 @@ class ReaderViewModel(
         currentPageIndex += 1
         _currentPage.value = _allPages.value[currentPageIndex]
     }
+
+    fun prevPage() {
+        if(currentPageIndex < 1)
+            return
+
+        currentPageIndex -= 1
+        _currentPage.value = _allPages.value[currentPageIndex]
+    }
 }
