@@ -41,6 +41,7 @@ import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import io.kamel.image.KamelImage
 import io.kamel.image.asyncPainterResource
+import kotlin.math.max
 
 class ReaderScreen(
     private val manga: Manga,
@@ -53,16 +54,26 @@ class ReaderScreen(
         val viewModel = rememberScreenModel { ReaderViewModel(MangaRepository()).also { it.loadPages(manga, chapter) } }
 
         val currentPage by viewModel.currentPage.collectAsState()
-        var scale by remember { mutableStateOf(1f) }
-        //var rotation by remember { mutableStateOf(0f) }
-        var offset by remember { mutableStateOf(Offset.Zero) }
-        val state = rememberTransformableState { zoomChange, offsetChange, rotationChange ->
-            scale *= zoomChange
-            //rotation += rotationChange
-            offset += offsetChange * scale
-        }
 
+        var containerSize by remember { mutableStateOf(IntSize.Zero) }
         var size by remember { mutableStateOf(IntSize.Zero) }
+        var scale by remember { mutableStateOf(1f) }
+        var offset by remember { mutableStateOf(Offset.Zero) }
+
+        val state = rememberTransformableState { zoom, pan, _ ->
+            scale *= zoom
+            val updatedOffset = Offset(
+                x = (offset.x + pan.x * scale),
+                y = (offset.y + pan.y * scale)
+            )
+            val maxX = max(0f, (size.width * scale) - containerSize.width)
+            val maxY = max(0f, (size.height * scale) - containerSize.height)
+
+            offset = Offset(
+                x = updatedOffset.x.coerceIn(-maxX, maxX),
+                y = updatedOffset.y.coerceIn(-maxY, maxY)
+            )
+        }
 
         if(currentPage == null) {
             CircularProgressIndicator()
@@ -71,7 +82,11 @@ class ReaderScreen(
 
         val page = currentPage!! // Yes, i check it before
 
-        Column {
+        Column(
+            modifier = Modifier.onGloballyPositioned { coordinates ->
+                containerSize = coordinates.size
+            }
+        ) {
             TopAppBar(
                 title = { Text("${chapter.title} - ${page.number}") },
                 navigationIcon = {
@@ -106,12 +121,14 @@ class ReaderScreen(
                                     viewModel.nextPage()
                                 else
                                     viewModel.prevPage()
+
+                                scale = 1f
+                                offset = Offset.Zero
                             }
                         }
                         .graphicsLayer(
                             scaleX = scale,
                             scaleY = scale,
-                            // rotationZ = rotation,
                             translationX = offset.x,
                             translationY = offset.y
                         )
