@@ -35,7 +35,7 @@ class ReaderViewModel(
     }
 
     fun nextPage() {
-        if(currentPageIndex > _allPages.value.lastIndex)
+        if(currentPageIndex >= _allPages.value.lastIndex)
             return
 
         currentPageIndex += 1
@@ -43,7 +43,7 @@ class ReaderViewModel(
     }
 
     fun prevPage() {
-        if(currentPageIndex < 1)
+        if(currentPageIndex <= 0)
             return
 
         currentPageIndex -= 1
